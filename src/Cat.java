@@ -2,12 +2,13 @@ import processing.core.PImage;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class Cat extends LiveObj{
     public Cat(String id, Point position, List<PImage> images, int resourceLimit, int resourceCount, double actionPeriod, double animationPeriod, int health, int healthLimit){
         super(id, position, images, resourceLimit, resourceCount, actionPeriod, animationPeriod, health, healthLimit);
     }
-    public boolean moveTo(WorldModel world, Entity rat, EventScheduler scheduler){
+    public boolean moveTo(WorldModel world, Rat rat, EventScheduler scheduler){
         if (this.position.adjacent(rat.position)) {
             world.removeEntity(scheduler, rat);
             return true;
@@ -36,6 +37,13 @@ public class Cat extends LiveObj{
     public void executeActivity(WorldModel world, ImageStore imageStore, EventScheduler scheduler){
         List<Entity> targetEntities = new ArrayList<>();
         targetEntities.add(new Rat(null, null, null, 0, 0, 0, 0, 0, 0));
+        Optional<Entity> fullTarget = world.findNearest(position, targetEntities);
+
+        if (fullTarget.isEmpty()) {
+            transform(world, scheduler, imageStore);
+        } else {
+            scheduler.scheduleEvent(this, this.createActivityAction(world, imageStore), actionPeriod);
+        }
     }
 
 }
