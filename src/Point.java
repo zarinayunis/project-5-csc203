@@ -87,6 +87,10 @@ public final class Point {
     public Entity createHouse(String id, List<PImage> images) {
         return new House( id, this, images, 0, 0, 0, 0, 0, 0);
     }
+    public Entity createBurning(String id, List<PImage> images) {
+        return new HouseBurning( id, this, images, 0, 0, 0, 0, 0, 0);
+    }
+
 
     public Entity createObstacle(String id, double animationPeriod, List<PImage> images) {
         return new Obstacle(id, this, images, 0, 0, 0, animationPeriod, 0, 0);
@@ -120,6 +124,10 @@ public final class Point {
     }
     public Point shift(int dx, int dy) { //Written for project 4
         return new Point(x + dx, y + dy);
+    }
+
+    public Entity createRat(String id, double actionPeriod, double animationPeriod, int resourceLimit, List<PImage> images) {
+        return new Rat(id, this, images, resourceLimit, 0, actionPeriod, animationPeriod, 0, 0);
     }
 
 }

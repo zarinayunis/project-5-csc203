@@ -28,12 +28,18 @@ public final class WorldModel {
     private static final int FAIRY_ACTION_PERIOD = 1;
     private static final int FAIRY_NUM_PROPERTIES = 2;
 
+    private static final String RAT_KEY = "rat";
+    private static final int RAT_ANIMATION_PERIOD = 1;
+    private static final int RAT_ACTION_PERIOD = 1;
+    private static final int RAT_NUM_PROPERTIES = 2;
+
     private static final int DUDE_LIMIT = 2;
     private static final String OBSTACLE_KEY = "obstacle";
     private static final int OBSTACLE_ANIMATION_PERIOD = 0;
     private static final int OBSTACLE_NUM_PROPERTIES = 1;
 
 
+    private static final int RAT_LIMIT = 2;
     private static final String TREE_KEY = "tree";
     private static final int TREE_ANIMATION_PERIOD = 0;
     private static final int TREE_ACTION_PERIOD = 1;
@@ -93,6 +99,15 @@ public final class WorldModel {
                 throw new IllegalArgumentException(String.format("%s requires %d properties when parsing", FAIRY_KEY, FAIRY_NUM_PROPERTIES));
             }
         }
+
+    private void parseRat(String[] properties, Point pt, String id, ImageStore imageStore) {
+        if (properties.length == RAT_NUM_PROPERTIES) {
+            Entity entity = pt.createDudeNotFull(id, Double.parseDouble(properties[RAT_ACTION_PERIOD]), Double.parseDouble(properties[RAT_ANIMATION_PERIOD]), Integer.parseInt(properties[RAT_LIMIT]), imageStore.getImageList(RAT_KEY));
+            this.tryAddEntity(entity);
+        } else {
+            throw new IllegalArgumentException(String.format("%s requires %d properties when parsing", RAT_KEY, RAT_NUM_PROPERTIES));
+        }
+    }
 
         private void parseTree(String[] properties, Point pt, String id, ImageStore imageStore) {
             if (properties.length == TREE_NUM_PROPERTIES) {
@@ -269,6 +284,7 @@ public final class WorldModel {
                     case TREE_KEY -> this.parseTree(properties, pt, id, imageStore);
                     case SAPLING_KEY -> this.parseSapling(properties, pt, id, imageStore);
                     case STUMP_KEY -> this.parseStump(properties, pt, id, imageStore);
+                    case RAT_KEY -> this.parseRat(properties, pt, id, imageStore);
                     default -> throw new IllegalArgumentException("Entity key is unknown");
                 }
             } else {
@@ -280,7 +296,7 @@ public final class WorldModel {
             return background[pos.y][pos.x];
         }
 
-        private void setBackgroundCell(Point pos, Background background) {
+        public void setBackgroundCell(Point pos, Background background) {
             this.background[pos.y][pos.x] = background;
         }
         public Optional<PImage> getBackgroundImage( Point pos) {

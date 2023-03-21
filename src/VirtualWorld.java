@@ -20,6 +20,8 @@ public final class VirtualWorld extends PApplet {
 
     private static final String IMAGE_LIST_FILE_NAME = "imagelist";
     private static final String DEFAULT_IMAGE_NAME = "background_default";
+    private static final String IMAGE_EVENT_1 = "event1";
+    private static final String IMAGE_EVENT_2 = "event2";
     private static final int DEFAULT_IMAGE_COLOR = 0x808080;
 
     private static final String FAST_FLAG = "-fast";
@@ -32,6 +34,8 @@ public final class VirtualWorld extends PApplet {
     private String loadFile = "world.sav";
     private long startTimeMillis = 0;
     private double timeScale = 1.0;
+
+    private double presses = 0;
 
     private ImageStore imageStore;
     private WorldModel world;
@@ -70,8 +74,9 @@ public final class VirtualWorld extends PApplet {
     // Just for debugging and for P5
     // Be sure to refactor this method as appropriate
     public void mousePressed() {
+        this.presses = presses + 1;
         Point pressed = mouseToPoint();
-        System.out.println("CLICK! " + pressed.x + ", " + pressed.y);
+        System.out.println("Ooh, an event!");
 
         Optional<Entity> entityOptional = world.getOccupant(pressed);
         if (entityOptional.isPresent()) {
@@ -79,6 +84,22 @@ public final class VirtualWorld extends PApplet {
             System.out.println(entity.id + ": " + entity.getClass() + " : " + entity.health);
         }
 
+        int row = pressed.y;
+        int col = pressed.x;
+
+        for (int i = row - 1; i <= row + 1; i++) {
+            for (int j = col - 1; j <= col + 1; j++) {
+                Point pt = new Point(j, i);
+                if (world.withinBounds(pt)) {
+                    if(this.presses % 2 == 0){
+                        world.setBackgroundCell(pt, new Background(IMAGE_EVENT_1, imageStore.getImageList(IMAGE_EVENT_1)));
+                    }
+                    else{
+                        world.setBackgroundCell(pt, new Background(IMAGE_EVENT_2, imageStore.getImageList(IMAGE_EVENT_2)));
+                    }
+                }
+            }
+        }
     }
 
     public void scheduleActions(WorldModel world, EventScheduler scheduler, ImageStore imageStore) {
