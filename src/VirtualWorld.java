@@ -87,12 +87,18 @@ public final class VirtualWorld extends PApplet {
         int row = pressed.y;
         int col = pressed.x;
 
+        Point position = new Point(pressed.x, pressed.y);
+
+
         for (int i = row - 1; i <= row + 1; i++) {
             for (int j = col - 1; j <= col + 1; j++) {
                 Point pt = new Point(j, i);
                 if (world.withinBounds(pt)) {
                     if(this.presses % 2 == 0){
                         world.setBackgroundCell(pt, new Background(IMAGE_EVENT_1, imageStore.getImageList(IMAGE_EVENT_1)));
+                        Entity rat = position.createRat("rat", 3, 1.266, 0, imageStore.getImageList("rat"));
+                        world.addEntity(rat);
+                        rat.scheduleActions(scheduler, world, imageStore);
                     }
                     else{
                         world.setBackgroundCell(pt, new Background(IMAGE_EVENT_2, imageStore.getImageList(IMAGE_EVENT_2)));

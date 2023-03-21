@@ -22,13 +22,13 @@ public class Rat extends LiveObj{
         Optional<Entity> fullTarget = world.findNearest(position, targetEntities);
 
         if (fullTarget.isEmpty()) {
-            transform(world, scheduler, imageStore);
+            transform(world, scheduler);
         } else {
             scheduler.scheduleEvent(this, this.createActivityAction(world, imageStore), actionPeriod);
         }
     }
 
-    public void transform(WorldModel world, EventScheduler scheduler, ImageStore imageStore) {
+    public void transform(WorldModel world, EventScheduler scheduler) {
         world.removeEntity(scheduler, this);
     }
 
