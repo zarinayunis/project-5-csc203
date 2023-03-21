@@ -11,21 +11,35 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
 public class Rat extends LiveObj{
+    public static final String BURNING_KEY = "burning";
+
     public Rat(String id, Point position, List<PImage> images, int resourceLimit, int resourceCount, double actionPeriod, double animationPeriod, int health, int healthLimit){
         super(id, position, images, resourceLimit, resourceCount, actionPeriod, animationPeriod, health, healthLimit);
     }
 
-    public void executeActivity(WorldModel world, ImageStore imageStore, EventScheduler scheduler) {
+    public void executeActivity( WorldModel world, ImageStore imageStore, EventScheduler scheduler) {
         List<Entity> targetEntities = new ArrayList<>();
         targetEntities.add(new House(null, null, null, 0, 0, 0, 0, 0, 0));
-        Optional<Entity> fullTarget = world.findNearest(position, targetEntities);
+        Optional<Entity> ratTarget = world.findNearest(position, targetEntities);
 
-        if (fullTarget.isEmpty()) {
-            transform(world, scheduler);
-        } else {
-            scheduler.scheduleEvent(this, this.createActivityAction(world, imageStore), actionPeriod);
+        if (ratTarget.isPresent()) {
+            Point tgtPos = ratTarget.get().position;
+
+            if (this.moveTo(world, ratTarget.get(), scheduler)) {
+
+                Entity burning = tgtPos.createBurning(BURNING_KEY + "_" + ratTarget.get().id, imageStore.getImageList(BURNING_KEY));
+
+                world.addEntity(burning);
+                burning.scheduleActions(scheduler, world, imageStore);
+            }
         }
+        else{
+            this.transform(world, scheduler);
+        }
+
+        scheduler.scheduleEvent(this, this.createActivityAction(world, imageStore), actionPeriod);
     }
 
     public void transform(WorldModel world, EventScheduler scheduler) {
@@ -33,12 +47,13 @@ public class Rat extends LiveObj{
     }
 
     public boolean moveTo(WorldModel world, Entity target, EventScheduler scheduler) {
-        if (position.adjacent(target.position)) {
+        if (this.position.adjacent(target.position)) {
+            world.removeEntity(scheduler, target);
             return true;
         } else {
-            Point nextPos = nextPosition(world, target.position);
+            Point nextPos = this.nextPosition(world, target.position);
 
-            if (!position.equals(nextPos)) {
+            if (!this.position.equals(nextPos)) {
                 world.moveEntity(scheduler, this, nextPos);
             }
             return false;

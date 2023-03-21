@@ -96,15 +96,17 @@ public final class VirtualWorld extends PApplet {
                 if (world.withinBounds(pt)) {
                     if(this.presses % 2 == 0){
                         world.setBackgroundCell(pt, new Background(IMAGE_EVENT_1, imageStore.getImageList(IMAGE_EVENT_1)));
-                        Entity rat = position.createRat("rat", 3, 1.266, 0, imageStore.getImageList("rat"));
-                        world.addEntity(rat);
-                        rat.scheduleActions(scheduler, world, imageStore);
                     }
                     else{
                         world.setBackgroundCell(pt, new Background(IMAGE_EVENT_2, imageStore.getImageList(IMAGE_EVENT_2)));
                     }
                 }
             }
+        }
+        if(this.presses % 2 == 0) {
+            Entity rat = position.createRat("rat", 1, 1.266, 4, imageStore.getImageList("rat"));
+            world.addEntity(rat);
+            rat.scheduleActions(scheduler, world, imageStore);
         }
     }
 
