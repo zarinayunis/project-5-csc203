@@ -38,4 +38,17 @@ public class Cat extends LiveObj{
         targetEntities.add(new Rat(null, null, null, 0, 0, 0, 0, 0, 0));
     }
 
+    @Override
+    public void scheduleActions(EventScheduler scheduler, WorldModel world, ImageStore imageStore) {
+
+    }
+
+    public void transform(WorldModel world, EventScheduler scheduler, ImageStore imageStore) {
+        Entity Rat = position.createRat(id, actionPeriod, animationPeriod, resourceLimit, images);
+
+        world.removeEntity(scheduler, this);
+
+        world.addEntity(Rat);
+        Rat.scheduleActions(scheduler, world, imageStore);
+    }
 }
