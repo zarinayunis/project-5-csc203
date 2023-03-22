@@ -5,8 +5,12 @@ import java.util.List;
 import java.util.Optional;
 
 public class Bird extends LiveObj{
-    public Bird(String id, Point position, List<PImage> images, int resourceLimit, int resourceCount, double actionPeriod, double animationPeriod, int health, int healthLimit){
+    private ImageStore imageStore;
+
+    public Bird(String id, Point position, List<PImage> images, int resourceLimit, int resourceCount, double actionPeriod, double animationPeriod, int health, int healthLimit,
+                ImageStore imageStore){
         super(id, position, images, resourceLimit, resourceCount, actionPeriod, animationPeriod, health, healthLimit);
+        this.imageStore = imageStore;
     }
     public void executeActivity( WorldModel world, ImageStore imageStore, EventScheduler scheduler) {
         List<Entity> targetEntities = new ArrayList<>();
@@ -37,6 +41,8 @@ public class Bird extends LiveObj{
 
             if (!this.position.equals(nextPos)) {
                 world.moveEntity(scheduler, this, nextPos);
+                world.setBackgroundCell(position, new Background("egg", imageStore.getImageList("egg")));
+
             }
             return false;
         }

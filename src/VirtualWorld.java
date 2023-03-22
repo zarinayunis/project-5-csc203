@@ -117,7 +117,7 @@ public final class VirtualWorld extends PApplet {
         }
 
         if(this.presses % 2 == 0) {
-            Entity bird = position.createBird("bird", 0.5, 0.5, 0, imageStore.getImageList("bird"));
+            Entity bird = position.createBird("bird", 0.5, 0.5, 0, imageStore.getImageList("bird"), imageStore);
             world.addEntity(bird);
             bird.scheduleActions(scheduler, world, imageStore);
         }

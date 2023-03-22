@@ -37,6 +37,7 @@ public class Cat extends LiveObj{
 
             if (!this.position.equals(nextPos)) {
                 world.moveEntity(scheduler, this, nextPos);
+
             }
             return false;
         }
@@ -64,5 +65,6 @@ public class Cat extends LiveObj{
         scheduler.scheduleEvent(this, this.createActivityAction(world, imageStore), actionPeriod);
         scheduler.scheduleEvent(this, this.createAnimationAction(0), this.getAnimationPeriod());
     }
+
 
 }
