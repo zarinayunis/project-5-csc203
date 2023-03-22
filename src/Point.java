@@ -130,4 +130,12 @@ public final class Point {
         return new Rat(id, this, images, resourceLimit, 0, actionPeriod, animationPeriod, 0, 0);
     }
 
+    public Entity createCat(String id, double actionPeriod, double animationPeriod, int resourceLimit, List<PImage> images) {
+        return new Cat(id, this, images, resourceLimit, 0, actionPeriod, animationPeriod, 0, 0);
+    }
+
+    public Entity createBird(String id, double actionPeriod, double animationPeriod, int resourceLimit, List<PImage> images) {
+        return new Bird(id, this, images, resourceLimit, 0, actionPeriod, animationPeriod, 0, 0);
+    }
+
 }

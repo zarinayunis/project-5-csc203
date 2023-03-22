@@ -3,40 +3,26 @@ import processing.core.PImage;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.List;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.function.BiPredicate;
-import java.util.function.Function;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
-public class Rat extends LiveObj{
-    public static final String BURNING_KEY = "burning";
-
-    public Rat(String id, Point position, List<PImage> images, int resourceLimit, int resourceCount, double actionPeriod, double animationPeriod, int health, int healthLimit){
+public class Bird extends LiveObj{
+    public Bird(String id, Point position, List<PImage> images, int resourceLimit, int resourceCount, double actionPeriod, double animationPeriod, int health, int healthLimit){
         super(id, position, images, resourceLimit, resourceCount, actionPeriod, animationPeriod, health, healthLimit);
     }
-
     public void executeActivity( WorldModel world, ImageStore imageStore, EventScheduler scheduler) {
         List<Entity> targetEntities = new ArrayList<>();
-        targetEntities.add(new House(null, null, null, 0, 0, 0, 0, 0, 0));
-        Optional<Entity> ratTarget = world.findNearest(position, targetEntities);
+        targetEntities.add(new HouseBurning(null, null, null, 0, 0, 0, 0, 0, 0));
+        Optional<Entity> birdTarget = world.findNearest(position, targetEntities);
 
-        if (ratTarget.isPresent()) {
-            Point tgtPos = ratTarget.get().position;
+        if (birdTarget.isPresent()) {
+            Point tgtPos = birdTarget.get().position;
 
-            if (this.moveTo(world, ratTarget.get(), scheduler)) {
+            if (this.moveTo(world, birdTarget.get(), scheduler)) {
 
-                Entity burning = tgtPos.createBurning(BURNING_KEY + "_" + ratTarget.get().id, imageStore.getImageList(BURNING_KEY));
+                Entity house = tgtPos.createHouse("house" + "_" + birdTarget.get().id, imageStore.getImageList("house"));
 
-                world.addEntity(burning);
-                burning.scheduleActions(scheduler, world, imageStore);
+                world.addEntity(house);
+                house.scheduleActions(scheduler, world, imageStore);
             }
-        }
-        else{
-            world.removeEntity(scheduler, this);
         }
 
         scheduler.scheduleEvent(this, this.createActivityAction(world, imageStore), actionPeriod);

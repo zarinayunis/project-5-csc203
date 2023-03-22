@@ -94,19 +94,32 @@ public final class VirtualWorld extends PApplet {
             for (int j = col - 1; j <= col + 1; j++) {
                 Point pt = new Point(j, i);
                 if (world.withinBounds(pt)) {
-                    if(this.presses % 2 == 0){
-                        world.setBackgroundCell(pt, new Background(IMAGE_EVENT_1, imageStore.getImageList(IMAGE_EVENT_1)));
+                    if(this.presses % 2 != 0){
+                        if(world.isOccupied(pt) && (world.getOccupancyCell(pt) instanceof Fairy)){
+                            world.removeEntityAt(pt);
+                            Entity cat = pt.createCat("cat", 1.5, 1, 4, imageStore.getImageList("cat"));
+                            world.addEntity(cat);
+                            cat.scheduleActions(scheduler, world, imageStore);
+                        }
+                        world.setBackgroundCell(pt, new Background(IMAGE_EVENT_2, imageStore.getImageList(IMAGE_EVENT_2)));
+
+                        if(!world.isOccupied(position)){
+                            Entity rat = position.createRat("rat", 0.5, 1, 4, imageStore.getImageList("rat"));
+                            world.addEntity(rat);
+                            rat.scheduleActions(scheduler, world, imageStore);
+                        }
                     }
                     else{
-                        world.setBackgroundCell(pt, new Background(IMAGE_EVENT_2, imageStore.getImageList(IMAGE_EVENT_2)));
+                        world.setBackgroundCell(pt, new Background(IMAGE_EVENT_1, imageStore.getImageList(IMAGE_EVENT_1)));
                     }
                 }
             }
         }
+
         if(this.presses % 2 == 0) {
-            Entity rat = position.createRat("rat", 1, 1.266, 4, imageStore.getImageList("rat"));
-            world.addEntity(rat);
-            rat.scheduleActions(scheduler, world, imageStore);
+            Entity bird = position.createBird("bird", 0.5, 0.5, 0, imageStore.getImageList("bird"));
+            world.addEntity(bird);
+            bird.scheduleActions(scheduler, world, imageStore);
         }
     }
 
