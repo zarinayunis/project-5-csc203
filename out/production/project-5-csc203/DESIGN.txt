@@ -1,0 +1,17 @@
+I believe that the functions that performed simple mathematical computations could be reasonably placed in any of the
+classes.These functions, like getIntFromRange() tend to actually work better as static methods, in my opinion. Thus, I
+would be fine including them anywhere.
+
+In a similar note to the mathematical computations, I think the methods that create entities, like createDudeNotFull()
+would work better as static methods, and thus could be placed anywhere. I think it would be more readable in the class
+Entity.
+
+scheduleActions() is also one that could reasonably be placed in multiple categories. I believe that it would do just as
+well in EventScheduler as it would in the Entity class.
+
+getCurrentImage() could be placed in any class, since it does not reference a specific object. In theory, it could be
+placed in Entity or Background, since that is what it specifically references.
+
+load() could be placed in WorldModel, ImageStore, or Background, since it references these specifically. I would actually
+think that it would be more readable in ImageStore, since it appears to work directly with images. However, it references
+WorldModel's variables so much that it is also more convenient to have it placed in this class.
