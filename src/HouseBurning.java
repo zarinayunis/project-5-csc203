@@ -7,5 +7,7 @@ class HouseBurning extends Entity{
         super(id, position, images, resourceLimit, resourceCount, actionPeriod, animationPeriod, health, healthLimit);
     }
     public void executeActivity(WorldModel world, ImageStore imageStore, EventScheduler scheduler){}
-    public void scheduleActions(EventScheduler scheduler, WorldModel world, ImageStore imageStore){}
+    public void scheduleActions(EventScheduler scheduler, WorldModel world, ImageStore imageStore){
+        scheduler.scheduleEvent(this, this.createAnimationAction(0), this.getAnimationPeriod());
+    }
 }

@@ -87,8 +87,8 @@ public final class Point {
     public Entity createHouse(String id, List<PImage> images) {
         return new House( id, this, images, 0, 0, 0, 0, 0, 0);
     }
-    public Entity createBurning(String id, List<PImage> images) {
-        return new HouseBurning( id, this, images, 0, 0, 0, 0, 0, 0);
+    public Entity createBurning(String id, List<PImage> images, double animationPeriod) {
+        return new HouseBurning( id, this, images, 0, 0, 0, animationPeriod, 0, 0);
     }
 
 

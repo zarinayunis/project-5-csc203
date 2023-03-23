@@ -29,7 +29,7 @@ public class Rat extends LiveObj{
 
             if (this.moveTo(world, ratTarget.get(), scheduler)) {
 
-                Entity burning = tgtPos.createBurning(BURNING_KEY + "_" + ratTarget.get().id, imageStore.getImageList(BURNING_KEY));
+                Entity burning = tgtPos.createBurning(BURNING_KEY + "_" + ratTarget.get().id, imageStore.getImageList(BURNING_KEY), 1);
 
                 world.addEntity(burning);
                 burning.scheduleActions(scheduler, world, imageStore);
